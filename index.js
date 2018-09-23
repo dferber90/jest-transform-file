@@ -1,5 +1,7 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
+const THIS_FILE = fs.readFileSync(__filename);
 
 // copied this function from
 // https://github.com/douzi8/base64-img/blob/master/base64-img.js
@@ -13,6 +15,20 @@ const base64 = (filename, data) => {
 };
 
 module.exports = {
+  getCacheKey: (fileData, filename, configString, { instrument, rootDir }) => {
+    return crypto
+      .createHash("md5")
+      .update(THIS_FILE)
+      .update("\0", "utf8")
+      .update(fileData)
+      .update("\0", "utf8")
+      .update(path.relative(rootDir, filename))
+      .update("\0", "utf8")
+      .update(configString)
+      .update("\0", "utf8")
+      .update(instrument ? "instrument" : "")
+      .digest("hex");
+  },
   process: (src, filename, config, options) => {
     // We could avoid reading from disk if we could use "src" directly, but I
     // could not make it work. I would like to do:
