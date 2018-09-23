@@ -1,0 +1,13 @@
+{
+  "name": "jest-transform-file",
+  "description": "Jest transformer to files (images) into Jest",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Dominik Ferber <dominik.ferber+npm@gmail.com> (http://dferber.de/)",
+  "license": "MIT",
+  "keywords": [
+    "visual-regression-testing",
+    "jest",
+    "file"
+  ]
+}
