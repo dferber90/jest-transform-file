@@ -15,14 +15,14 @@ const base64 = (filename, data) => {
 };
 
 module.exports = {
-  getCacheKey: (fileData, filename, configString, { instrument, rootDir }) => {
+  getCacheKey: (fileData, filename, configString, { instrument }) => {
     return crypto
       .createHash("md5")
       .update(THIS_FILE)
       .update("\0", "utf8")
       .update(fileData)
       .update("\0", "utf8")
-      .update(path.relative(rootDir, filename))
+      .update(filename)
       .update("\0", "utf8")
       .update(configString)
       .update("\0", "utf8")
