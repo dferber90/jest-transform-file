@@ -15,7 +15,7 @@ const base64 = (filename, data) => {
 };
 
 module.exports = {
-  getCacheKey: (fileData, filename, configString, { instrument }) => {
+  getCacheKey: (fileData, filename, { instrument }) => {
     return crypto
       .createHash("md5")
       .update(THIS_FILE)
@@ -23,8 +23,6 @@ module.exports = {
       .update(fileData)
       .update("\0", "utf8")
       .update(filename)
-      .update("\0", "utf8")
-      .update(configString)
       .update("\0", "utf8")
       .update(instrument ? "instrument" : "")
       .digest("hex");
@@ -36,6 +34,7 @@ module.exports = {
     // But that  did not work, so we use read the file for now.
     // This is an easy optimization in case somebody can make it work!
     const data = base64(filename, fs.readFileSync(filename));
-    return `module.exports = ${JSON.stringify(data)};`;
+    return {code: `module.exports = ${JSON.stringify(data)};`
+  };
   }
 };
